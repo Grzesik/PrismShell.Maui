@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32519.111
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismShell.Maui", "PrismShell.Maui\PrismShell.Maui.csproj", "{37C2DA37-A5B6-4CF0-BEEF-40F9FB97477E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37C2DA37-A5B6-4CF0-BEEF-40F9FB97477E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37C2DA37-A5B6-4CF0-BEEF-40F9FB97477E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37C2DA37-A5B6-4CF0-BEEF-40F9FB97477E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37C2DA37-A5B6-4CF0-BEEF-40F9FB97477E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB7D6D43-06BD-40FF-92F2-5AD690594191}
+	EndGlobalSection
+EndGlobal
