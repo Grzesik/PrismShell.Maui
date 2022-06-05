@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PrismShell.Maui.ResX;
+using System;
 using System.Threading.Tasks;
 
 namespace Prism.Navigation
 {
-    public class DynamicNavigation : IDynamicNavigation
+    public class NavigationService : INavigationService
     {
         #region --[fields]--
 
@@ -12,7 +13,7 @@ namespace Prism.Navigation
 
         #endregion
 
-        public DynamicNavigation()
+        public NavigationService()
         {
         }
 
@@ -47,7 +48,7 @@ namespace Prism.Navigation
 
         #region --[ViewModel]--
 
-        public static void SetServiceProvider(IServiceProvider serviceProvider)
+        internal static void SetServiceProvider(IServiceProvider serviceProvider)
         {
             serviceProvideCacher = serviceProvider;
         }
@@ -61,7 +62,7 @@ namespace Prism.Navigation
                 {
                     if(serviceProvideCacher == null)
                     {
-                        throw new InvalidOperationException("The ServiceProvider is not set!");
+                        throw new InvalidOperationException(SystemResources.ServiceProviderNotSet);
                     }
 
                     var vm = serviceProvideCacher.GetService(info.ViewModelType);

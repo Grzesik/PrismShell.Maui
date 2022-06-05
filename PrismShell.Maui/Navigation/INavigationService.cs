@@ -1,6 +1,6 @@
 ﻿namespace Prism.Navigation
 {
-    public interface IDynamicNavigation
+    public interface INavigationService
     {
         //Shell navigation
         Task GoToAsync(ShellNavigationState state, INavigationParameters param = null);

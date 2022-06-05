@@ -240,6 +240,15 @@ namespace PrismShell.Maui.ResX {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ServiceProvider is not set!.
+        /// </summary>
+        internal static string ServiceProviderNotSet {
+            get {
+                return ResourceManager.GetString("ServiceProviderNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Module {0} is marked for automatic initialization when the application starts, but it depends on modules that are marked as OnDemand initialization. To fix this error, mark the dependency modules for InitializationMode=WhenAvailable, or remove this validation by extending the ModuleCatalog class..
         /// </summary>
         internal static string StartupModuleDependsOnAnOnDemandModule {

@@ -182,6 +182,9 @@ Error was: {1}.</value>
   <data name="PropertySupport_StaticExpression_Exception" xml:space="preserve">
     <value>The referenced property is a static property.</value>
   </data>
+  <data name="ServiceProviderNotSet" xml:space="preserve">
+    <value>The ServiceProvider is not set!</value>
+  </data>
   <data name="StartupModuleDependsOnAnOnDemandModule" xml:space="preserve">
     <value>Module {0} is marked for automatic initialization when the application starts, but it depends on modules that are marked as OnDemand initialization. To fix this error, mark the dependency modules for InitializationMode=WhenAvailable, or remove this validation by extending the ModuleCatalog class.</value>
   </data>

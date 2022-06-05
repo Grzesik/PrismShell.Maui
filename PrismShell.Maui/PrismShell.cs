@@ -10,6 +10,11 @@ namespace Prism
 
         }
 
+        public void Initailize(IServiceProvider serviceProvider)
+        {
+            NavigationService.SetServiceProvider(serviceProvider);
+        }
+
         protected override async void OnNavigating(ShellNavigatingEventArgs args)
         {
             base.OnNavigating(args);
@@ -20,7 +25,7 @@ namespace Prism
                 Console.WriteLine($"AppShell_Navigating {Shell.Current.CurrentPage.ToString()}");
                 Console.WriteLine("*************************************************************");
                 NavigatingParameters param = new NavigatingParameters();
-                param.NavigationParamaters = DynamicNavigation.GetParameter();
+                param.NavigationParamaters = NavigationService.GetParameter();
                 param.Source = args.Target.Location.OriginalString;
                 ((INavigatedAware)Shell.Current.CurrentPage.BindingContext).OnNavigatedFrom(param);
 
@@ -44,7 +49,7 @@ namespace Prism
 
             if (Shell.Current?.CurrentPage.BindingContext == null)
             {
-                DynamicNavigation.SetViewModel(Shell.Current.CurrentPage);
+                NavigationService.SetViewModel(Shell.Current.CurrentPage);
             }
 
             if (Shell.Current?.CurrentPage.BindingContext is INavigatedAware)
@@ -52,10 +57,10 @@ namespace Prism
                 Console.WriteLine("*************************************************************");
                 Console.WriteLine($"AppShell_Navigated {Shell.Current.CurrentPage.ToString()}");
                 Console.WriteLine("*************************************************************");
-                ((INavigatedAware)Shell.Current.CurrentPage.BindingContext).OnNavigatedTo(DynamicNavigation.GetParameter());
+                ((INavigatedAware)Shell.Current.CurrentPage.BindingContext).OnNavigatedTo(NavigationService.GetParameter());
 
                 //the parameter was set to viewmodels and now its time to delete it!
-                DynamicNavigation.ClearParameter();
+                NavigationService.ClearParameter();
             }
         }
     }
