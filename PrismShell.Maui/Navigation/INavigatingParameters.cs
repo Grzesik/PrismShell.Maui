@@ -1,6 +1,4 @@
-﻿//New
-
-namespace Prism.Navigation
+﻿namespace Prism.Navigation
 {
     public interface INavigatingParameters
     {
@@ -10,6 +8,7 @@ namespace Prism.Navigation
         ////false - don't cancel;  true - cancel
         Func<Task<bool>> NavigationDialog { get; set; }
 
-        string Source { get;  }
+        string CurrentUrl { get; set; }
+        string TargetUrl { get; set; }
     }
 }

@@ -10,7 +10,11 @@ namespace Prism
 
         }
 
-        public void Initailize(IServiceProvider serviceProvider)
+        /// <summary>
+        /// Set up the framework.
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        public static void Initialize(IServiceProvider serviceProvider)
         {
             NavigationService.SetServiceProvider(serviceProvider);
         }
@@ -24,9 +28,12 @@ namespace Prism
                 Console.WriteLine("*************************************************************");
                 Console.WriteLine($"AppShell_Navigating {Shell.Current.CurrentPage.ToString()}");
                 Console.WriteLine("*************************************************************");
+
                 NavigatingParameters param = new NavigatingParameters();
                 param.NavigationParamaters = NavigationService.GetParameter();
-                param.Source = args.Target.Location.OriginalString;
+                param.CurrentUrl = args.Current?.Location.OriginalString;
+                param.TargetUrl = args.Target?.Location.OriginalString;
+
                 ((INavigatedAware)Shell.Current.CurrentPage.BindingContext).OnNavigatedFrom(param);
 
                 if (param.NavigationDialog != null)
@@ -57,7 +64,13 @@ namespace Prism
                 Console.WriteLine("*************************************************************");
                 Console.WriteLine($"AppShell_Navigated {Shell.Current.CurrentPage.ToString()}");
                 Console.WriteLine("*************************************************************");
-                ((INavigatedAware)Shell.Current.CurrentPage.BindingContext).OnNavigatedTo(NavigationService.GetParameter());
+
+                NavigatedParameters param = new NavigatedParameters();
+                param.NavigationParamaters = NavigationService.GetParameter();
+                param.CurrentUrl = args.Current?.Location.OriginalString;
+                param.PreviousUrl = args.Previous?.Location.OriginalString;
+
+                ((INavigatedAware)Shell.Current.CurrentPage.BindingContext).OnNavigatedTo(param);
 
                 //the parameter was set to viewmodels and now its time to delete it!
                 NavigationService.ClearParameter();

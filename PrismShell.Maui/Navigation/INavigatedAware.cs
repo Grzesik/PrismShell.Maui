@@ -13,7 +13,7 @@
         /// Called when the implementer has been navigated to.
         /// </summary>
         /// <param name="parameters">The navigation parameters.</param>
-        //void OnNavigatedTo(INavigationParameters parameters);
-        void OnNavigatedTo(INavigationParameters param);
+        //void OnNavigatedTo(INavigatedParameters parameters);
+        void OnNavigatedTo(INavigatedParameters param);
     }
 }
