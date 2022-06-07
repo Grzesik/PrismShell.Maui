@@ -18,7 +18,7 @@ Create a Shell application (Xamarin.Forms or .Net.Maui).
 
 ### Step2. Add Nuget Packages
 
-Add the PrismShell.Forms (for Xamarin.Forms) or the PrismShell.Maui (for .Net.Maui) Nuget package to the project. For Xamarin.Forms add it to the OS-Specific project and to the common project. For .NET.MAUI add it to the main project. 
+Add the [PrismShell.Forms](https://www.nuget.org/packages/PrismShell.Forms/) (for Xamarin.Forms) or the [PrismShell.Maui](https://www.nuget.org/packages/PrismShell.Maui/) (for .Net.Maui) Nuget package to the project. For Xamarin.Forms add it to the OS-Specific project and to the common project. For .NET.MAUI add it to the main project. 
 
 ### Step3. Add an IoC Container
 
@@ -33,7 +33,7 @@ First overload the AppShell like this:
 Example Shell.
 
 ```c#
-public partial class AppShell : PrismShell
+public partial class AppShell : Prism.PrismShell
 {
   public AppShell()
   {
@@ -45,6 +45,24 @@ public partial class AppShell : PrismShell
      Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
    }
 }
+
+For Xamarin:forms:
+
+prism:PrismShell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:prism="clr-namespace:Prism;assembly=PrismShell.Forms"
+       Title="ShellWithPrismForms"
+       x:Class="ShellWithPrismForms.AppShell">
+
+For .Net.Maui:
+           
+prism:PrismShell
+    x:Class="ShellWithPrismMaui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:prism="clr-namespace:Prism;assembly=PrismShell.Maui"
+    Title="ShellWithPrismMaui">           
+           
 ```
 
  
@@ -121,7 +139,7 @@ public partial class App : Application
     ServiceProvider = services.BuildServiceProvider();
 
     //Initialize the framework!
-    PrismShell.Initialize(ServiceProvider);
+    Prism.PrismShell.Initialize(ServiceProvider);
   }
 
   void SetupFrameworkServices(IServiceCollection services)
