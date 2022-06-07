@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<prism:PrismShell
+    x:Class="ShellWithPrismMaui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:ShellWithPrismMaui.Views"
+    xmlns:prism="clr-namespace:Prism;assembly=PrismShell.Maui"
+    Title="ShellWithPrismMaui">
+
+    <!--<ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />-->
+
+    <FlyoutItem Title="About" Icon="icon_about.png">
+        <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Browse" Icon="icon_feed.png">
+        <ShellContent Route="ItemsPage" ContentTemplate="{DataTemplate local:ItemsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Route="animals" Title="Domestic" Icon="paw.png">
+        <ShellContent Route="CatsPage"
+                      Title="Cats"
+                      Icon="cat.png"
+                      ContentTemplate="{DataTemplate local:CatsPage}" />
+        <ShellContent Route="DogsPage"
+                      Title="Dogs"
+                      Icon="dog.png"
+                      ContentTemplate="{DataTemplate local:DogsPage}" />
+    </FlyoutItem>
+
+
+    <MenuItem Text="Logout" StyleClass="MenuItemLayoutStyle" Clicked="OnMenuItemClicked">
+    </MenuItem>
+
+
+    <TabBar>
+        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
+    </TabBar>
+
+</prism:PrismShell>

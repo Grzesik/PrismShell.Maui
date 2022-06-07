@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShellWithPrismMaui.Views.MyCatPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="My cat page"
+                VerticalOptions="Start" 
+                HorizontalOptions="CenterAndExpand" Margin="20"/>
+
+            <Button Text="Call dialog" Command="{Binding DialogCommand}" Margin="20" VerticalOptions="Start" HorizontalOptions="Center"/>
+            <Button Text="Send event" Command="{Binding EventCommand}" Margin="20" VerticalOptions="Start" HorizontalOptions="Center"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
