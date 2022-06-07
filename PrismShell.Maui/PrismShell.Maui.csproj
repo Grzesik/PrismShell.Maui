@@ -15,7 +15,24 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<Authors>Software2Business - Marian Grzesik</Authors>
+		<Company>Software2Business GmbH</Company>
+		<Description>PrismShell is a framework to build loosely coupled applications for .Net.Maui. It combines the Shell-Navigation with many convenient elements from the PrismLibrary.</Description>
+		<Copyright>Copyright (c) Software2Business GmbH &amp; Prism Library</Copyright>
+		<PackageProjectUrl>https://github.com/Grzesik/PrismShell.Maui</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/Grzesik/PrismShell.Maui</RepositoryUrl>
+		<PackageTags>prismshell;prism;shell;xamarin;maui;.net.maui</PackageTags>
+		<PackageReleaseNotes>First release</PackageReleaseNotes>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Update="ResX\SystemResources.Designer.cs">
