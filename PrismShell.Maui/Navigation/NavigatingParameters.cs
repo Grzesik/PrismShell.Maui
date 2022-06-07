@@ -6,7 +6,8 @@
 
         //New for canceling the navigation (used in OnNavigatedFrom)
         ////false - don't cancel;  true - cancel
-        public Func<Task<bool>> NavigationDialog { get; set; }
+        ///If not defined - don't cancel
+        public Func<Task<bool>> OnCancel { get; set; }
 
         public string CurrentUrl { get; set; }
         public string TargetUrl { get; set; }

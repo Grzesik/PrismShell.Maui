@@ -36,11 +36,11 @@ namespace Prism
 
                 ((INavigatedAware)Shell.Current.CurrentPage.BindingContext).OnNavigatedFrom(param);
 
-                if (param.NavigationDialog != null)
+                if (param.OnCancel != null)
                 {
                     ShellNavigatingDeferral token = args.GetDeferral();
 
-                    if (args.CanCancel && await param.NavigationDialog() == true)
+                    if (args.CanCancel && await param.OnCancel() == true)
                     {
                         args.Cancel();
                     }
