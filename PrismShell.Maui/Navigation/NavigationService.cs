@@ -1,6 +1,4 @@
 ﻿using PrismShell.Maui.ResX;
-using System;
-using System.Threading.Tasks;
 
 namespace Prism.Navigation
 {
@@ -69,7 +67,9 @@ namespace Prism.Navigation
 
                     if (vm is IPageLifecycleAware)
                     {
+                        page.Appearing -= Page_Appearing;
                         page.Appearing += Page_Appearing;
+                        page.Disappearing -= Page_Disappearing;
                         page.Disappearing += Page_Disappearing;
                     }
 

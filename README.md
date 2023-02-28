@@ -1,10 +1,10 @@
-# Introduction to [PrismShell.Forms](https://github.com/Grzesik/PrismShell.Forms) & [PrismShell.MAUI](https://github.com/Grzesik/PrismShell.Maui)
+# Introduction to [PrismShell.MAUI](https://github.com/Grzesik/PrismShell.Maui)
 
  
 
-PrismShell is a framework to build loosely coupled applications for Xamarin.Forms and .Net.Maui. It combines the Shell-Navigation with many convenient elements from the [PrismLibrary](https://github.com/PrismLibrary/Prism). This library doesn’t have any dependencies, therefore some files were copied and modified from the original PrismLibrary.  Most parts of the library are compatible with the PrismLibrary, but there are also some enhancements. 
+PrismShell is a framework to build loosely coupled applications for Xamarin.Forms and .Net.Maui. It combines the Shell-Navigation with many convenient elements from the [PrismLibrary](https://github.com/PrismLibrary/Prism). This library doesnâ€™t have any dependencies, therefore some files were copied and modified from the original PrismLibrary.  Most parts of the library are compatible with the PrismLibrary, but there are also some enhancements. 
 
-PrismShell is especially interesting for developers, who want to build Xamarin.Forms or .Net.Maui application based on the Shell and use the Shell navigation. If you’ve once used the PrismLibrary, you don’t want to miss many of the convenient elements from it. Please read the description, how to use the library. You'll find an example in the project [PrismShell.Forms](https://github.com/Grzesik/PrismShell.Forms) & [PrismShell.MAUI](https://github.com/Grzesik/PrismShell.Maui)
+PrismShell is especially interesting for developers, who want to build Xamarin.Forms or .Net.Maui application based on the Shell and use the Shell navigation. If youâ€™ve once used the PrismLibrary, you donâ€™t want to miss many of the convenient elements from it. Please read the description, how to use the library. You'll find an example in the project [PrismShell.Forms](https://github.com/Grzesik/PrismShell.Forms) & [PrismShell.MAUI](https://github.com/Grzesik/PrismShell.Maui)
 
  
 
@@ -18,11 +18,13 @@ Create a Shell application (Xamarin.Forms or .Net.Maui).
 
 ### Step2. Add Nuget Packages
 
-Add the [PrismShell.Forms](https://www.nuget.org/packages/PrismShell.Forms/) (for Xamarin.Forms) or the [PrismShell.Maui](https://www.nuget.org/packages/PrismShell.Maui/) (for .Net.Maui) Nuget package to the project. For Xamarin.Forms add it to the OS-Specific project and to the common project. For .NET.MAUI add it to the main project. 
+Add the [PrismShell.Maui](https://www.nuget.org/packages/PrismShell.Maui/) Nuget package to the main project.
 
 ### Step3. Add an IoC Container
 
-Add an IoC Container like the Microsoft.Extensions.DependencyInjection. You can use any other IoC Container, it is only necessary to implement the IServiceProvider interface for the IoC Container. 
+Add an IoC Container like the Microsoft.Extensions.DependencyInjection. You can use any other IoC Container, it is only necessary to implement the IServiceProvider interface for the IoC Container.
+
+In .Net 7 this dependency is added for you, when you create a new Maui project.
 
 ### Step4. Initialize the library
 
@@ -33,29 +35,14 @@ First overload the AppShell like this:
 Example Shell.
 
 ```c#
-public partial class AppShell : Prism.PrismShell
+public partial class AppShell
 {
   public AppShell()
   {
      InitializeComponent();
-
-     //Register all routs, which are not defined in the menu
-
-     Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-     Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
    }
 }
 
-For Xamarin:forms:
-
-prism:PrismShell xmlns="http://xamarin.com/schemas/2014/forms" 
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:prism="clr-namespace:Prism;assembly=PrismShell.Forms"
-       Title="ShellWithPrismForms"
-       x:Class="ShellWithPrismForms.AppShell">
-
-For .Net.Maui:
-           
 prism:PrismShell
     x:Class="ShellWithPrismMaui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -65,33 +52,48 @@ prism:PrismShell
            
 ```
 
- 
 
-Register all Views and ViewModels for navigation in the App class:
+
+Register all Services, Views and ViewModels  in the MauiProgram class.
+
+```c#
+var builder = MauiApp.CreateBuilder();
+	builder
+			.UseMauiApp<App>()
+			.ConfigureFonts(fonts =>
+			{
+				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+			})
+            .RegisterAppServices()
+            .RegisterViewModels()
+            .RegisterViews();         
+           
+```
+
+
+
+Register all Views and ViewModels for navigation in the MauiProgramm class:
 
 `RegisterForNavigation.Register<MyPage, MyViewModel>();`
 
- 
+
 
 Add all ViewModels to the IoC Container:
 
 ```
-var services = new ServiceCollection();
-
-services.AddTransient<MyViewModel>();
-…
-
-ServiceProvider = services.BuildServiceProvider();
+mauiAppBuilder.Services.AddTransient<MyViewModel>();
+â€¦
 ```
 
- 
+
 
 Add framework services to the IoC Container:
 
 ```
-services.AddSingleton<INavigationService, NavigationService>();
-services.AddSingleton<IEventAggregator, EventAggregator>();
-services.AddSingleton<IPageDialogService, PageDialogService>();
+mauiAppBuilder.Services.AddSingleton<INavigationService, NavigationService>();
+mauiAppBuilder.Services.AddSingleton<IEventAggregator, EventAggregator>();
+mauiAppBuilder.Services.AddSingleton<IPageDialogService, PageDialogService>();
 ```
 
 After the IoC Container is created, initialize the framework:
@@ -101,72 +103,64 @@ After the IoC Container is created, initialize the framework:
 Example App.
 
 ```c#
-public partial class App : Application
+public static class MauiProgram
 {
-  public static IServiceProvider ServiceProvider { get; set; }
-
-  public App(Action<IServiceCollection> addPlatformServices = null)
+  public static MauiApp CreateMauiApp()
   {
-     InitializeComponent();
-     SetupServices(addPlatformServices);
-     SetupNavigation();
-     MainPage = new AppShell();
+	 var builder = MauiApp.CreateBuilder();
+	 builder
+		.UseMauiApp<App>()
+		.ConfigureFonts(fonts =>
+		{
+			fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+			fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+		})
+        .RegisterAppServices()
+        .RegisterViewModels()
+        .RegisterViews();
+
+        var app = builder.Build();
+
+        //Important for the framework!
+        Prism.PrismShell.Initialize(app.Services);
+
+        return app;
   }
 
-  /// <summary>
-  /// Add:
-  /// 1. All services
-  /// 2. All classes, which should be known to the IoC like ViewModels
-  /// </summary>
-  /// <param name="addPlatformServices"></param>
-  void SetupServices(Action<IServiceCollection> addPlatformServices = null)
+
+  public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder mauiAppBuilder)
   {
-     var services = new ServiceCollection();
+      //Add framework services
+      mauiAppBuilder.Services.AddSingleton<INavigationService, NavigationService>();
+      mauiAppBuilder.Services.AddSingleton<IEventAggregator, EventAggregator>();
+      mauiAppBuilder.Services.AddSingleton<IPageDialogService, PageDialogService>();
 
-     // Add platform specific services
-
-     addPlatformServices?.Invoke(services);
-     SetupFrameworkServices(services);
-
-    // Add ViewModels to IoC container
-    services.AddTransient<AboutViewModel>();
-    services.AddTransient<LoginViewModel>();
-
-    // Add services
-    services.AddSingleton<IDataStore<Item>, MockDataStore>();
-
-    //create the IoC container
-    ServiceProvider = services.BuildServiceProvider();
-
-    //Initialize the framework!
-    Prism.PrismShell.Initialize(ServiceProvider);
+      //Add app services
+      mauiAppBuilder.Services.<IDataStore<Item>, MockDataStore>();
+      return mauiAppBuilder;
   }
-
-  void SetupFrameworkServices(IServiceCollection services)
+    
+  public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
   {
-     //Add framework services
-     services.AddSingleton<INavigationService, NavigationService>();
-     services.AddSingleton<IEventAggregator, EventAggregator>();
-     services.AddSingleton<IPageDialogService, PageDialogService>();
+      mauiAppBuilder.Services.AddTransient<AboutViewModel>();
+      mauiAppBuilder.Services.AddTransient<LoginViewModel>();
+      return mauiAppBuilder;
   }
-
-  /// <summary>
-  /// Connects View with ViewModel.
-  /// If the connection is not defined, you must create the viewmodel manually 
-  /// and set it  to the BindinContext of the view.
-  /// </summary>
-  void SetupNavigation()
+    
+  public static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
   {
-      RegisterForNavigation.Register<AboutPage, AboutViewModel>();
+      //Connect Views to ViewModels
+	  RegisterForNavigation.Register<AboutPage, AboutViewModel>();
       RegisterForNavigation.Register<LoginPage, LoginViewModel>();
-  }
 
-  public static BaseViewModel GetViewModel<TViewModel>() where TViewModel : BaseViewModel
-  {
-      return App.ServiceProvider.GetService<TViewModel>();
+      //Register all routs for Shell
+      Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
+      return mauiAppBuilder;
   }
 }
 ```
+
+
 
 ### Page
 
@@ -315,7 +309,7 @@ Example.
 ```
 public MyViewModel(INavigationService navigtionService)
 {
-…
+â€¦
 
 async void OnItemSelected(Item item)
 {
