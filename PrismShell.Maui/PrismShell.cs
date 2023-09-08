@@ -1,11 +1,14 @@
 ﻿using Prism.Navigation;
-using System;
+using System.Diagnostics;
 
 namespace Prism
 {
-    public class PrismShell : Shell
+	public class PrismShell : Shell
     {
-        public PrismShell()
+        internal static IServiceProvider _serviceProvider;
+
+
+		public PrismShell()
         {
 
         }
@@ -16,7 +19,7 @@ namespace Prism
         /// <param name="serviceProvider"></param>
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            NavigationService.SetServiceProvider(serviceProvider);
+			_serviceProvider = serviceProvider;
         }
 
         protected override async void OnNavigating(ShellNavigatingEventArgs args)
@@ -25,12 +28,21 @@ namespace Prism
 
             if (Shell.Current?.CurrentPage.BindingContext is INavigatedAware)
             {
-                Console.WriteLine("*************************************************************");
-                Console.WriteLine($"AppShell_Navigating {Shell.Current.CurrentPage.ToString()}");
-                Console.WriteLine("*************************************************************");
+                Debug.WriteLine("*************************************************************");
+                Debug.WriteLine($"PrisShell Navigating from {Shell.Current.CurrentPage.ToString()}");
+				Debug.WriteLine("*************************************************************");
 
-                NavigatingParameters param = new NavigatingParameters();
-                param.NavigationParamaters = NavigationService.GetParameter();
+                var navigationService = _serviceProvider?.GetService<INavigationService>();
+
+                if(navigationService == null )
+                {
+					Debug.WriteLine("*************************************************************");
+                    Debug.WriteLine($"PrisShell - the IServiceProvider is not initialized!");
+					Debug.WriteLine("*************************************************************");
+				}
+
+				NavigatingParameters param = new NavigatingParameters();
+                param.NavigationParamaters = navigationService?.GetParameter();
                 param.CurrentUrl = args.Current?.Location.OriginalString;
                 param.TargetUrl = args.Target?.Location.OriginalString;
 
@@ -54,26 +66,28 @@ namespace Prism
         {
             base.OnNavigated(args);
 
-            if (Shell.Current?.CurrentPage.BindingContext == null)
+			var navigationService = _serviceProvider?.GetService<INavigationService>();
+
+			if (Shell.Current?.CurrentPage.BindingContext == null)
             {
-                NavigationService.SetViewModel(Shell.Current.CurrentPage);
+				navigationService?.SetViewModel(Shell.Current.CurrentPage);
             }
 
             if (Shell.Current?.CurrentPage.BindingContext is INavigatedAware)
             {
                 Console.WriteLine("*************************************************************");
-                Console.WriteLine($"AppShell_Navigated {Shell.Current.CurrentPage.ToString()}");
+                Console.WriteLine($"PrisShell Navigated from {Shell.Current.CurrentPage.ToString()}");
                 Console.WriteLine("*************************************************************");
 
                 NavigatedParameters param = new NavigatedParameters();
-                param.NavigationParamaters = NavigationService.GetParameter();
+                param.NavigationParamaters = navigationService?.GetParameter();
                 param.CurrentUrl = args.Current?.Location.OriginalString;
                 param.PreviousUrl = args.Previous?.Location.OriginalString;
 
                 ((INavigatedAware)Shell.Current.CurrentPage.BindingContext).OnNavigatedTo(param);
 
-                //the parameter was set to viewmodels and now its time to delete it!
-                NavigationService.ClearParameter();
+				//the parameter was set to viewmodels and now its time to delete it!
+				navigationService?.ClearParameter();
             }
         }
     }

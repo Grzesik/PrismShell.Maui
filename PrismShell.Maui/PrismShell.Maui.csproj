@@ -25,7 +25,7 @@
 		<PackageTags>prismshell;prism;shell;xamarin;maui;.net.maui</PackageTags>
 		<PackageReleaseNotes>Updated how to setup a sample project with the framework</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

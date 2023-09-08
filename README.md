@@ -121,7 +121,7 @@ public static class MauiProgram
 
         var app = builder.Build();
 
-        //Important for the framework!
+        //Important for the framework to get the IoC!
         Prism.PrismShell.Initialize(app.Services);
 
         return app;
@@ -369,7 +369,7 @@ There is also another possibility to navigate to another ViewModel. It is possib
 
 `await Shell.Current.GoToAsync($"{nameof(MyPage)}");`
 
-It is also possible to transmit parameters to the next viewmodel. Use the static function: NavigationService.SetParameter(param)
+It is also possible to transmit parameters to the next viewmodel. Use the function: NavigationService.SetParameter(param)
 
 Example.
 
@@ -379,12 +379,12 @@ async void OnItemSelected(Item item)
    var param = new NavigationParameters();
    param.Add("ItemId", item.Id);
 
-   NavigationService.SetParameter(param);
+   navigationService.SetParameter(param);
    await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}");
 }
 ```
 
-The navigation in this case has the same behavior, like using the NavigationService. Using the NavigationService is a preferred way to navigate.
+The navigation in this case has the same behavior, like using the NavigationService. Using the NavigationService is a preferred way to navigate with parameters.
 
 ### Page Dialog Service
 

@@ -1,4 +1,5 @@
-﻿using PrismShell.Maui.ResX;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PrismShell.Maui.ResX;
 
 namespace Prism.Navigation
 {
@@ -9,11 +10,15 @@ namespace Prism.Navigation
         private static INavigationParameters navigationParametersCache;
         private static IServiceProvider serviceProvideCacher;
 
-        #endregion
+        private IPageLifecycleAware vmPageLifecycleAware;
 
-        public NavigationService()
+
+		#endregion
+
+		public NavigationService()
         {
-        }
+			serviceProvideCacher = PrismShell._serviceProvider;
+		}
 
         #region --[shell navigation]--
 
@@ -27,17 +32,17 @@ namespace Prism.Navigation
 
         #region --[parameters in navigation]--
 
-        public static INavigationParameters GetParameter()
+        public INavigationParameters GetParameter()
         {
             return navigationParametersCache;
         }
 
-        public static void SetParameter(INavigationParameters param)
+        public void SetParameter(INavigationParameters param)
         {
             navigationParametersCache = param;
         }
 
-        public static void ClearParameter()
+        public void ClearParameter()
         {
             navigationParametersCache = null;
         }
@@ -46,12 +51,7 @@ namespace Prism.Navigation
 
         #region --[ViewModel]--
 
-        internal static void SetServiceProvider(IServiceProvider serviceProvider)
-        {
-            serviceProvideCacher = serviceProvider;
-        }
-
-        public static void SetViewModel(Page page, string pagename = null)
+        public void SetViewModel(Page page, string pagename = null)
         {
             if (page != null)
             {
@@ -67,7 +67,9 @@ namespace Prism.Navigation
 
                     if (vm is IPageLifecycleAware)
                     {
-                        page.Appearing -= Page_Appearing;
+                        vmPageLifecycleAware = vm as IPageLifecycleAware;
+
+						page.Appearing -= Page_Appearing;
                         page.Appearing += Page_Appearing;
                         page.Disappearing -= Page_Disappearing;
                         page.Disappearing += Page_Disappearing;
@@ -83,7 +85,7 @@ namespace Prism.Navigation
             }
         }
 
-        private static void Page_Disappearing(object sender, EventArgs e)
+        private void Page_Disappearing(object sender, EventArgs e)
         {
             var page = (Page)sender;
             if (page != null && page.BindingContext is IPageLifecycleAware)
@@ -92,14 +94,18 @@ namespace Prism.Navigation
             }
         }
 
-        private static void Page_Appearing(object sender, EventArgs e)
+        private void Page_Appearing(object sender, EventArgs e)
         {
             var page = (Page)sender;
             if (page != null && page.BindingContext is IPageLifecycleAware)
             {
                 ((IPageLifecycleAware)page.BindingContext).OnAppearing();
             }
-        }
+            else if (page != null && vmPageLifecycleAware != null) //when the BindingContext is set later, it calls the OnAppearing in viewmodel
+			{
+				vmPageLifecycleAware.OnAppearing();
+			}
+		}
 
 #endregion
     }
