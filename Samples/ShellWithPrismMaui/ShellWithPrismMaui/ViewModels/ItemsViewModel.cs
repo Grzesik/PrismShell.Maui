@@ -65,7 +65,7 @@ namespace ShellWithPrismMaui.ViewModels
 
         public override void OnAppearing()
         {
-            IsBusy = true;
+            IsBusy = false;
             SelectedItem = null;
         }
 
